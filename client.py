@@ -6,6 +6,8 @@ from tkinter import font
 from tkinter import ttk
 from tkinter import messagebox
 
+import os
+
 host = socket.gethostbyname("localhost")
 server_port = 2202
 
@@ -69,6 +71,8 @@ class Client:
 		# tyoing the message
 		self.entryName = Entry(self.login,
 							font="Helvetica 11")
+
+		self.entryName.focus_set()
 
 		self.entryName.place(relwidth=0.4,
 							relheight=0.12,
@@ -163,7 +167,6 @@ class Client:
 
 		# to show chat window
 		self.Window.deiconify()
-
 		self.Window.geometry("470x550")
 		self.Window.title("CHATROOM")
 		self.Window.resizable(width=False,
@@ -226,24 +229,45 @@ class Client:
 
 
 		# Choose File
-		def fileChoosing():
-			file = filedialog.askopenfilename(initialdir= path.dirname(__file__))
-			self.entryMsg.delete(0, END)
-			self.entryMsg.insert(0, file)
+
 
 		self.chooseFile = Button(self.labelBottom,
 								text="ChooseFile",
 								font="Helvetica 10 bold",
 								width=10,
 								bg="#ABB2B9",
-								command = fileChoosing)
+								command = lambda: self.sendFile(self.status))
 
 		self.chooseFile.place(relx=0.55,
 							 rely=0.008,
 							 relheight=0.06,
 							 relwidth=0.22)
-		pass
-	
+
+	def sendFile(self, friend):
+		file = filedialog.askopenfilename(title="Choose a file",initialdir= os.path.dirname(__file__))
+		filename = str(file.split('/')[-1])
+
+		with open(file, 'r') as f:
+			file_content = str(f.read())
+			f.close()
+		try: 
+			content = filename
+			msg = f"{self.name}\n{filename}\n{file_content}"
+			print(file_content)
+			self.connect_to_friend[friend].send(msg.encode())
+			self.textCons[friend].config(state = NORMAL)
+			self.textCons[friend].insert(END, f' \t[[ NOTIFICATION ]] You has shared {filename} file.   \n\n')
+			self.textCons[friend].config(state = DISABLED)
+			self.entryMsg.delete(0, END)
+		except:
+			if friend in self.connect_to_friend:
+				self.connect_to_friend.pop(friend)
+			self.getPeer(friend)
+			if friend in self.connect_to_friend:
+				self.sendFile(friend)
+
+
+
 	def layout(self, friend):
 		self.hide_all_frame()
 		self.frames[friend].pack(fill="both", expand=1)
@@ -297,7 +321,7 @@ class Client:
 			Thread(target=self.accept_connect_from_friend).start()
 	
 	def Register(self):
-		messagebox.showwarning(title='Warning', message="Oops, this feature doesn't support right now")
+		messagebox.showwarning(title='Warning', message="Oops, this feature hasn't been released :))")
 
 	def getPeer(self, username):
 		self.sendRequest(self.GETPEER, f'{username}')
@@ -347,6 +371,13 @@ class Client:
 					data = data.split("\n")
 					name = data[0]
 					msg = data[1]
+					if len(data) > 2:
+						filecontent = data[2]
+						dst_dir = r'File/Download/' + msg
+						with open(dst_dir, 'x') as f:
+							f.write(filecontent)
+							f.close()
+
 					#display msg in textCons
 					if msg:
 						self.textCons[name].config(state = NORMAL)
