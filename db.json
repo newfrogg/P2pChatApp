@@ -1,0 +1,43 @@
+{
+    "admin": {
+        "password": "admin",
+        "friends": [
+            "Ha",
+            "Hien",
+            "Hinh",
+            "Minh"
+        ]
+    },
+    "Ha": {
+        "password": "1",
+        "friends": [
+            "Hien",
+            "Hinh",
+            "Minh",
+            "admin" 
+        ]
+    },
+    "Hien": {
+        "password": "2",
+        "friends": [
+            "Ha",
+            "Minh",
+            "admin"
+        ]
+    },
+    "Hinh": {
+        "password": "3",
+        "friends": [
+            "Minh",
+            "admin"
+        ]
+    },
+    "Minh": {
+        "password": "4",
+        "friends": [
+            "Ha",
+            "Hinh",
+            "admin"
+        ]
+    }
+}
