@@ -5,7 +5,6 @@ Hybrid P2P Chat Application
 ## About the repo
 ```
 ├── Download
-│   └── test.txt
 ├── Test
 │   └── test.txt
 ├── .gitignore
