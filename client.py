@@ -371,17 +371,20 @@ class Client:
 					data = data.split("\n")
 					name = data[0]
 					msg = data[1]
-					if len(data) > 2:
-						filecontent = data[2]
-						dst_dir = r'File/Download/' + msg
-						with open(dst_dir, 'x') as f:
-							f.write(filecontent)
-							f.close()
 
 					#display msg in textCons
 					if msg:
 						self.textCons[name].config(state = NORMAL)
-						self.textCons[name].insert(END, f'<{name}> : {msg}\n\n')
+						if len(data) > 2:
+							filecontent = data[2]
+							dst_dir = r'Download/' + msg
+							with open(dst_dir, 'x') as f:
+								f.write(filecontent)
+								f.close()
+							
+							self.textCons[name].insert(END, f'{name} has shared {msg} file. Visit Download to see it.\n\n')
+						else:
+							self.textCons[name].insert(END, f'<{name}> : {msg}\n\n')
 						self.textCons[name].config(state = DISABLED)
 
 				elif data and data == '~disconnect~':
