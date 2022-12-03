@@ -9,7 +9,7 @@
         ]
     },
     "Ha": {
-        "password": "1",
+        "password": "1234",
         "friends": [
             "Hien",
             "Hinh",
@@ -18,7 +18,7 @@
         ]
     },
     "Hien": {
-        "password": "2",
+        "password": "1234",
         "friends": [
             "Ha",
             "Minh",
@@ -26,14 +26,14 @@
         ]
     },
     "Hinh": {
-        "password": "3",
+        "password": "1234",
         "friends": [
             "Minh",
             "admin"
         ]
     },
     "Minh": {
-        "password": "4",
+        "password": "1234",
         "friends": [
             "Ha",
             "Hinh",
